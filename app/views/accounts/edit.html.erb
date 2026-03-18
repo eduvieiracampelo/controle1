@@ -1,0 +1,40 @@
+<div class="max-w-lg mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-900 mb-6">Editar Conta</h1>
+
+  <%= form_with model: @account, class: "bg-white dark:bg-gray-800 rounded-lg shadow p-6" do |f| %>
+    <div class="mb-4">
+      <%= f.label :name, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.text_field :name, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500", required: true %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :account_type, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.select :account_type, Account.account_types.keys.map { |t| [Account.new(account_type: t).display_type, t] }, {}, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :balance, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.number_field :balance, step: 0.01, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :credit_limit, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.number_field :credit_limit, step: 0.01, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :color, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.color_field :color, class: "w-16 h-10 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer" %>
+    </div>
+
+    <div class="mb-6">
+      <%= f.label :icon, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.text_field :icon, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="flex gap-3">
+      <%= f.submit "Atualizar Conta", class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 cursor-pointer" %>
+      <%= link_to "Cancelar", accounts_path, class: "bg-gray-300 dark:bg-gray-600 dark:text-gray-900 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg" %>
+    </div>
+  <% end %>
+</div>

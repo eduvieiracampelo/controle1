@@ -1,0 +1,21 @@
+<div class="max-w-lg mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-900 mb-6">Tag</h1>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <dl class="space-y-4">
+      <div>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Nome</dt>
+        <dd class="font-medium">
+          <span class="inline-flex items-center px-3 py-1 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+            <%= @tag.name %>
+          </span>
+        </dd>
+      </div>
+    </dl>
+
+    <div class="mt-6 flex gap-3">
+      <%= link_to "Editar", edit_tag_path(@tag), class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+      <%= link_to "Voltar", tags_path, class: "bg-gray-300 dark:bg-gray-600 dark:text-gray-900 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg" %>
+    </div>
+  </div>
+</div>

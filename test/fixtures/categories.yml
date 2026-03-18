@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+expense:
+  name: Despesas Gerais
+  category_type: 0
+  icon: shopping-bag
+  color: "#EF4444"
+
+income:
+  name: Receitas Gerais
+  category_type: 1
+  icon: wallet
+  color: "#10B981"

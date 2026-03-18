@@ -1,0 +1,66 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-900"><%= @account.name %></h1>
+  <div class="flex gap-2">
+    <%= link_to "Editar", edit_account_path(@account), class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+    <%= link_to "Voltar", accounts_path, class: "bg-gray-300 dark:bg-gray-600 dark:text-gray-900 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg" %>
+  </div>
+</div>
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+  <dl class="grid grid-cols-2 gap-4">
+    <div>
+      <dt class="text-sm text-gray-500 dark:text-gray-400">Tipo</dt>
+      <dd class="font-medium text-gray-900 dark:text-gray-900"><%= @account.display_type %></dd>
+    </div>
+    <div>
+      <dt class="text-sm text-gray-500 dark:text-gray-400">Saldo</dt>
+      <dd class="font-medium <%= @account.balance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' %>">
+        <%= number_to_currency(@account.balance) %>
+      </dd>
+    </div>
+    <% if @account.account_type_credit_card? %>
+      <div>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Limite de Crédito</dt>
+        <dd class="font-medium text-gray-900 dark:text-gray-900"><%= number_to_currency(@account.credit_limit) %></dd>
+      </div>
+      <div>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Crédito Disponível</dt>
+        <dd class="font-medium text-green-600 dark:text-green-400"><%= number_to_currency(@account.available_credit) %></dd>
+      </div>
+    <% end %>
+  </dl>
+</div>
+
+<div class="mt-8">
+  <h2 class="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-900">Últimas Transações</h2>
+  <% if @account.transactions.any? %>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+      <table class="w-full">
+        <thead class="bg-gray-50 dark:bg-gray-700">
+          <tr>
+            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Data</th>
+            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Descrição</th>
+            <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Categoria</th>
+            <th class="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-300">Valor</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+          <% @account.transactions.by_date.limit(10).each do |transaction| %>
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= l(transaction.date) %></td>
+              <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= transaction.description %></td>
+              <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= transaction.category.name %></td>
+              <td class="px-4 py-3 text-sm text-right <%= transaction.transaction_type_expense? ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' %>">
+                <%= number_to_currency(transaction.signed_amount) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center text-gray-500 dark:text-gray-400">
+      Nenhuma transação nesta conta.
+    </div>
+  <% end %>
+</div>

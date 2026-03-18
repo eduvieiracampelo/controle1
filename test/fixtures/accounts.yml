@@ -1,0 +1,25 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+checking:
+  name: Conta Corrente
+  account_type: 0
+  balance: 1000.00
+  credit_limit: 0
+  color: "#3B82F6"
+  icon: bank
+
+savings:
+  name: Poupança
+  account_type: 1
+  balance: 5000.00
+  credit_limit: 0
+  color: "#10B981"
+  icon: piggy-bank
+
+credit_card:
+  name: Cartão de Crédito
+  account_type: 3
+  balance: 0
+  credit_limit: 5000.00
+  color: "#EF4444"
+  icon: credit-card

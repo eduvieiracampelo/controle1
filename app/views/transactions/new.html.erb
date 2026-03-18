@@ -1,0 +1,51 @@
+<div class="max-w-lg mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-900 mb-6">Nova Transação</h1>
+
+  <%= form_with model: @transaction, class: "bg-white dark:bg-gray-800 rounded-lg shadow p-6" do |f| %>
+    <div class="mb-4">
+      <%= f.label :transaction_type, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.select :transaction_type, { "Despesa" => "expense", "Receita" => "income", "Transferência" => "transfer" }, {}, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :amount, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.number_field :amount, step: 0.01, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500", required: true, placeholder: "0.00" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :description, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.text_area :description, rows: 2, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <%= f.label :date, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+        <%= f.date_field :date, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500", required: true %>
+      </div>
+      <div class="flex items-center pt-6">
+        <%= f.check_box :paid, class: "w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500 dark:bg-gray-700" %>
+        <%= f.label :paid, "Pago", class: "ml-2 text-sm text-gray-800 dark:text-gray-300" %>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :account_id, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.collection_select :account_id, @accounts, :id, :name, { prompt: "Selecione uma conta" }, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500", required: true %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :category_id, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.grouped_collection_select :category_id, Category.roots, :children, :name, :id, :name, { prompt: "Selecione uma categoria" }, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="mb-6">
+      <%= f.label :tag_ids, "Tags", class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.collection_select :tag_ids, @tags, :id, :name, {}, { multiple: true, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" } %>
+    </div>
+
+    <div class="flex gap-3">
+      <%= f.submit "Criar Transação", class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 cursor-pointer" %>
+      <%= link_to "Cancelar", transactions_path, class: "bg-gray-300 dark:bg-gray-600 dark:text-gray-900 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg" %>
+    </div>
+  <% end %>
+</div>

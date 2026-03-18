@@ -1,0 +1,137 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Categorias e Tags</h1>
+  <div class="flex gap-2">
+    <%= link_to "Nova Categoria", new_category_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+    <%= link_to "Nova Tag", new_tag_path, class: "bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700" %>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Categorias</h2>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+      <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+        <h3 class="text-sm font-medium text-red-600 dark:text-red-400 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+          Despesas
+        </h3>
+      </div>
+      <div class="divide-y divide-gray-200 dark:divide-gray-700">
+        <% @categories.expenses.roots.order(:name).each do |category| %>
+          <div class="p-4">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="w-3 h-3 rounded-full" style="background-color: <%= category.color %>"></span>
+                <span class="font-medium text-gray-900 dark:text-white"><%= category.name %></span>
+              </div>
+              <div class="flex gap-2">
+                <%= link_to "+ Sub", new_category_path(parent_id: category.id), class: "text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" %>
+                <%= link_to "Editar", edit_category_path(category), class: "text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" %>
+                <%= link_to "Excluir", category, method: :delete, data: { confirm: "Tem certeza?" }, class: "text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" %>
+              </div>
+            </div>
+            <% if category.children.any? %>
+              <div class="ml-6 mt-2 space-y-1">
+                <% category.children.order(:name).each do |child| %>
+                  <div class="flex justify-between items-center text-sm">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full" style="background-color: <%= child.color %>"></span>
+                      <span class="text-gray-600 dark:text-gray-400"><%= child.name %></span>
+                    </div>
+                    <div class="flex gap-2">
+                      <%= link_to "Editar", edit_category_path(child), class: "text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" %>
+                      <%= link_to "Excluir", child, method: :delete, data: { confirm: "Tem certeza?" }, class: "text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="p-4 border-t border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700">
+        <h3 class="text-sm font-medium text-green-600 dark:text-green-400 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-green-500"></span>
+          Receitas
+        </h3>
+      </div>
+      <div class="divide-y divide-gray-200 dark:divide-gray-700">
+        <% @categories.incomes.roots.order(:name).each do |category| %>
+          <div class="p-4">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="w-3 h-3 rounded-full" style="background-color: <%= category.color %>"></span>
+                <span class="font-medium text-gray-900 dark:text-white"><%= category.name %></span>
+              </div>
+              <div class="flex gap-2">
+                <%= link_to "+ Sub", new_category_path(parent_id: category.id), class: "text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" %>
+                <%= link_to "Editar", edit_category_path(category), class: "text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" %>
+                <%= link_to "Excluir", category, method: :delete, data: { confirm: "Tem certeza?" }, class: "text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" %>
+              </div>
+            </div>
+            <% if category.children.any? %>
+              <div class="ml-6 mt-2 space-y-1">
+                <% category.children.order(:name).each do |child| %>
+                  <div class="flex justify-between items-center text-sm">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2 h-2 rounded-full" style="background-color: <%= child.color %>"></span>
+                      <span class="text-gray-600 dark:text-gray-400"><%= child.name %></span>
+                    </div>
+                    <div class="flex gap-2">
+                      <%= link_to "Editar", edit_category_path(child), class: "text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300" %>
+                      <%= link_to "Excluir", child, method: :delete, data: { confirm: "Tem certeza?" }, class: "text-xs text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300" %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Tags</h2>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden mb-6">
+      <div class="p-4">
+        <div class="flex flex-wrap gap-2">
+          <% @tags.each do |tag| %>
+            <div class="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1">
+              <span class="text-sm text-gray-700 dark:text-gray-300"><%= tag.name %></span>
+              <%= link_to edit_tag_path(tag), class: "text-gray-400 hover:text-blue-600 dark:hover:text-blue-400" do %>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                </svg>
+              <% end %>
+              <%= link_to tag, method: :delete, data: { confirm: "Tem certeza?" }, class: "text-gray-400 hover:text-red-600 dark:hover:text-red-400" do %>
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+        <% if @tags.empty? %>
+          <p class="text-gray-500 dark:text-gray-400 text-sm">Nenhuma tag cadastrada.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg shadow p-6 text-white">
+      <h3 class="font-semibold mb-2">O que são Tags?</h3>
+      <p class="text-sm text-purple-100 mb-4">
+        Tags são rótulos que você pode adicionar às transações para facilitar a organização e filtragem. 
+        Use tags como "Fixo", "Urgente" ou qualquer outro rótulo que faça sentido para você.
+      </p>
+      <%= link_to "Criar Nova Tag", new_tag_path, class: "inline-block bg-white text-purple-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-50" %>
+    </div>
+  </div>
+</div>

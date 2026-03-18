@@ -1,0 +1,35 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-900"><%= @category.name %></h1>
+  <div class="flex gap-2">
+    <%= link_to "Editar", edit_category_path(@category), class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+    <%= link_to "Voltar", categories_path, class: "bg-gray-300 dark:bg-gray-600 dark:text-gray-900 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg" %>
+  </div>
+</div>
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+  <dl class="grid grid-cols-2 gap-4">
+    <div>
+      <dt class="text-sm text-gray-500 dark:text-gray-400">Tipo</dt>
+      <dd class="font-medium text-gray-900 dark:text-gray-900"><%= @category.display_type %></dd>
+    </div>
+    <div>
+      <dt class="text-sm text-gray-500 dark:text-gray-400">Cor</dt>
+      <dd class="flex items-center gap-2">
+        <span class="w-6 h-6 rounded" style="background-color: <%= @category.color %>"></span>
+        <span class="text-gray-900 dark:text-gray-900"><%= @category.color %></span>
+      </dd>
+    </div>
+    <% if @category.parent %>
+      <div>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Categoria Pai</dt>
+        <dd class="font-medium text-gray-900 dark:text-gray-900"><%= @category.parent.name %></dd>
+      </div>
+    <% end %>
+    <% if @category.children.any? %>
+      <div>
+        <dt class="text-sm text-gray-500 dark:text-gray-400">Subcategorias</dt>
+        <dd class="font-medium text-gray-900 dark:text-gray-900"><%= @category.children.pluck(:name).join(", ") %></dd>
+      </div>
+    <% end %>
+  </dl>
+</div>

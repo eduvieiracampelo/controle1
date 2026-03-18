@@ -1,0 +1,98 @@
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-900">Transações</h1>
+  <%= link_to "Nova Transação", new_transaction_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+</div>
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-900 mb-4">Filtros</h2>
+  <%= form_with url: transactions_path, method: :get, class: "grid grid-cols-1 md:grid-cols-5 gap-4 items-end" do |f| %>
+    <div>
+      <%= f.label :start_date, "Data Início", class: "block text-sm text-gray-600 dark:text-gray-400 mb-1" %>
+      <%= f.date_field :start_date, value: params[:start_date], class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :end_date, "Data Fim", class: "block text-sm text-gray-600 dark:text-gray-400 mb-1" %>
+      <%= f.date_field :end_date, value: params[:end_date], class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :account_id, "Conta", class: "block text-sm text-gray-600 dark:text-gray-400 mb-1" %>
+      <%= f.collection_select :account_id, @accounts, :id, :name, { include_blank: "Todas" }, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :category_id, "Categoria", class: "block text-sm text-gray-600 dark:text-gray-400 mb-1" %>
+      <%= f.collection_select :category_id, Category.all, :id, :name, { include_blank: "Todas" }, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2" %>
+    </div>
+    <div>
+      <%= f.label :transaction_type, "Tipo", class: "block text-sm text-gray-600 dark:text-gray-400 mb-1" %>
+      <%= f.select :transaction_type, { "Todas" => "", "Despesa" => "expense", "Receita" => "income" }, { selected: params[:transaction_type] || "" }, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2" %>
+    </div>
+    <div class="flex gap-2">
+      <%= f.submit "Filtrar", class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg cursor-pointer" %>
+      <%= link_to "Limpar", transactions_path, class: "bg-gray-300 dark:bg-gray-600 dark:text-gray-900 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+    <div class="text-sm text-gray-500 dark:text-gray-400">Receitas</div>
+    <div class="text-xl font-bold text-green-600 dark:text-green-400"><%= number_to_currency(@total_incomes) %></div>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+    <div class="text-sm text-gray-500 dark:text-gray-400">Despesas</div>
+    <div class="text-xl font-bold text-red-600 dark:text-red-400"><%= number_to_currency(@total_expenses) %></div>
+  </div>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-4">
+    <div class="text-sm text-gray-500 dark:text-gray-400">Saldo do Período</div>
+    <div class="text-xl font-bold <%= @total_balance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400' %>">
+      <%= number_to_currency(@total_balance) %>
+    </div>
+  </div>
+</div>
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+  <table class="w-full">
+    <thead class="bg-gray-50 dark:bg-gray-700">
+      <tr>
+        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Data</th>
+        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Descrição</th>
+        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Categoria</th>
+        <th class="px-4 py-3 text-left text-sm font-medium text-gray-500 dark:text-gray-300">Conta</th>
+        <th class="px-4 py-3 text-right text-sm font-medium text-gray-500 dark:text-gray-300">Valor</th>
+        <th class="px-4 py-3 text-center text-sm font-medium text-gray-500 dark:text-gray-300">Ações</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+      <% @transactions.each do |transaction| %>
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+          <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= l(transaction.date) %></td>
+          <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+            <%= transaction.description %>
+            <% if transaction.paid %>
+              <span class="ml-1 text-xs text-green-600 dark:text-green-400">✓</span>
+            <% end %>
+          </td>
+          <td class="px-4 py-3 text-sm">
+            <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium" style="background-color: <%= transaction.category.color %>20; color: <%= transaction.category.color %>">
+              <%= transaction.category.name %>
+            </span>
+          </td>
+          <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100"><%= transaction.account.name %></td>
+          <td class="px-4 py-3 text-sm text-right font-medium <%= transaction.transaction_type_expense? ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' %>">
+            <%= number_to_currency(transaction.signed_amount) %>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <%= link_to "Editar", edit_transaction_path(transaction), class: "text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm" %>
+            <%= link_to "Excluir", transaction, method: :delete, data: { confirm: "Tem certeza?" }, class: "text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 text-sm ml-2" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<% if @transactions.empty? %>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 text-center text-gray-500 dark:text-gray-400">
+    Nenhuma transação encontrada.
+  </div>
+<% end %>

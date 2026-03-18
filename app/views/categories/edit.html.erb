@@ -1,0 +1,30 @@
+<div class="max-w-lg mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-900 mb-6">Editar Categoria</h1>
+
+  <%= form_with model: @category, class: "bg-white dark:bg-gray-800 rounded-lg shadow p-6" do |f| %>
+    <div class="mb-4">
+      <%= f.label :name, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.text_field :name, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500", required: true %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :category_type, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.select :category_type, { "Despesa" => "expense", "Receita" => "income" }, {}, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :parent_id, "Categoria Pai (opcional)", class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.collection_select :parent_id, Category.roots.where(category_type: @category.category_type), :id, :name, { include_blank: true }, class: "w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-900 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :color, class: "block text-sm font-medium text-gray-800 dark:text-gray-300 mb-1" %>
+      <%= f.color_field :color, class: "w-16 h-10 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer" %>
+    </div>
+
+    <div class="flex gap-3">
+      <%= f.submit "Atualizar Categoria", class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 cursor-pointer" %>
+      <%= link_to "Cancelar", categories_path, class: "bg-gray-300 dark:bg-gray-600 dark:text-gray-900 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg" %>
+    </div>
+  <% end %>
+</div>

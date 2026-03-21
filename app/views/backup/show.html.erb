@@ -1,0 +1,102 @@
+<div class="max-w-2xl mx-auto">
+  <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Backup e Restauração</h1>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+    <div class="flex items-start gap-4">
+      <div class="bg-blue-100 dark:bg-blue-900 p-3 rounded-lg">
+        <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+      </div>
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Fazer Backup</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Baixe uma cópia do banco de dados atual para manter seus dados seguros.
+        </p>
+      </div>
+    </div>
+
+    <% if @db_exists %>
+      <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div>
+            <span class="text-gray-500 dark:text-gray-400">Banco:</span>
+            <span class="font-medium text-gray-900 dark:text-white"><%= Rails.env %></span>
+          </div>
+          <div>
+            <span class="text-gray-500 dark:text-gray-400">Tamanho:</span>
+            <span class="font-medium text-gray-900 dark:text-white"><%= @db_size %></span>
+          </div>
+          <div class="col-span-2">
+            <span class="text-gray-500 dark:text-gray-400">Última modificação:</span>
+            <span class="font-medium text-gray-900 dark:text-white"><%= @db_modified %></span>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+        <p class="text-sm text-yellow-700 dark:text-yellow-400">
+          Banco de dados não encontrado.
+        </p>
+      </div>
+    <% end %>
+
+    <div class="mt-4">
+      <%= link_to download_backup_path, class: "inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 #{'opacity-50 cursor-not-allowed' unless @db_exists}" do %>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+        </svg>
+        Baixar Backup
+      <% end %>
+    </div>
+  </div>
+
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="flex items-start gap-4 mb-4">
+      <div class="bg-green-100 dark:bg-green-900 p-3 rounded-lg">
+        <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+      </div>
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Restaurar Backup</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          Restaure os dados de um backup anteriormente salvo.
+        </p>
+      </div>
+    </div>
+
+    <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-4">
+      <div class="flex gap-2">
+        <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+        </svg>
+        <p class="text-sm text-yellow-700 dark:text-yellow-400">
+          <strong>Atenção:</strong> A restauração substituirá todos os dados atuais. Certifique-se de ter feito um backup dos dados atuais antes de continuar.
+        </p>
+      </div>
+    </div>
+
+    <%= form_with url: restore_backup_path, method: :post, local: true do |f| %>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Selecionar arquivo de backup (.sqlite3)
+        </label>
+        <div class="relative">
+          <input type="file" name="file" id="file" accept=".sqlite3,.sqlite" required
+                 class="block w-full text-sm text-gray-500 dark:text-gray-400
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-lg file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 dark:file:bg-blue-900
+                        file:text-blue-700 dark:file:text-blue-300
+                        hover:file:bg-blue-100 dark:hover:file:bg-blue-800
+                        cursor-pointer">
+        </div>
+      </div>
+
+      <%= f.submit "Restaurar Backup", data: { confirm: "Tem certeza que deseja restaurar o backup? Todos os dados atuais serão substituídos." },
+                   class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700" %>
+    <% end %>
+  </div>
+</div>

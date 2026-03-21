@@ -8,6 +8,10 @@ Rails.application.routes.draw do
 
   get "dashboard", to: "dashboard#index", as: :dashboard
 
+  get "backup", to: "backup#show", as: :backup
+  get "backup/download", to: "backup#download", as: :download_backup
+  post "backup/restore", to: "backup#restore", as: :restore_backup
+
   root "dashboard#index"
 
   get "up" => "rails/health#show", as: :rails_health_check

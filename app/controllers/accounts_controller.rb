@@ -32,7 +32,7 @@ class AccountsController < ApplicationController
   end
 
   def destroy
-    @account.destroy!
+    @account.destroy
     redirect_to accounts_path, notice: "Conta excluída com sucesso."
   end
 

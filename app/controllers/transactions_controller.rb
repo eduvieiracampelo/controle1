@@ -3,7 +3,7 @@ class TransactionsController < ApplicationController
   before_action :load_collections, only: [ :index, :new, :edit, :create, :update ]
 
   def index
-    @transactions = Transaction.by_date
+    @transactions = Transaction.by_date.includes(:account, :category, :tags)
     @transactions = @transactions.by_period(params[:start_date], params[:end_date]) if params[:start_date].present?
     @transactions = @transactions.by_account(params[:account_id]) if params[:account_id].present?
     @transactions = @transactions.by_category(params[:category_id]) if params[:category_id].present?
@@ -45,7 +45,7 @@ class TransactionsController < ApplicationController
 
   def destroy
     update_account_balance(@transaction, reverse: true)
-    @transaction.destroy!
+    @transaction.destroy
     redirect_to transactions_path, notice: "Transação excluída com sucesso."
   end
 
@@ -66,22 +66,25 @@ class TransactionsController < ApplicationController
   end
 
   def update_account_balance(transaction, old_amount = nil, reverse: false)
-    account = transaction.account
-    amount = transaction.amount.to_f
+    Account.transaction do
+      account = transaction.account
+      account.lock!
+      amount = transaction.amount.to_f
 
-    multiplier = reverse ? -1 : 1
-    if old_amount
-      adjustment = (amount - old_amount.to_f) * multiplier
-    else
-      adjustment = amount * multiplier
-    end
+      multiplier = reverse ? -1 : 1
+      if old_amount
+        adjustment = (amount - old_amount.to_f) * multiplier
+      else
+        adjustment = amount * multiplier
+      end
 
-    case transaction.transaction_type.to_sym
-    when :expense
-      account.balance -= adjustment.abs
-    when :income
-      account.balance += adjustment.abs
+      case transaction.transaction_type.to_sym
+      when :expense
+        account.balance -= adjustment.abs
+      when :income
+        account.balance += adjustment.abs
+      end
+      account.save!
     end
-    account.save!
   end
 end

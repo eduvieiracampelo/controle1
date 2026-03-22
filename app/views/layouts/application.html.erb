@@ -52,14 +52,22 @@
       html.dark th { color: #d1d5db !important; }
       html.dark tbody tr:hover { background-color: #374151 !important; }
       
-      html.dark input, 
-      html.dark select, 
-      html.dark textarea {
-        background-color: #374151 !important;
-        border-color: #6b7280 !important;
-        color: #f3f4f6 !important;
-      }
-    </style>
+       html.dark input, 
+       html.dark select, 
+       html.dark textarea {
+         background-color: #374151 !important;
+         border-color: #6b7280 !important;
+         color: #f3f4f6 !important;
+       }
+       
+       .pagy-nav { display: flex; gap: 0.25rem; }
+       .pagy-nav .page { padding: 0.5rem 0.75rem; border-radius: 0.25rem; background-color: #f3f4f6; color: #374151; }
+       .pagy-nav .page.active { background-color: #3b82f6; color: white; }
+       .pagy-nav .page:hover { background-color: #e5e7eb; }
+       .pagy-nav .page.prev, .pagy-nav .page.next { color: #6b7280; }
+       html.dark .pagy-nav .page { background-color: #374151; color: #e5e7eb; }
+       html.dark .pagy-nav .page:hover { background-color: #4b5563; }
+     </style>
 
     <script>
       function toggleTheme() {

@@ -11,7 +11,7 @@ class DashboardController < ApplicationController
     @monthly_expense = @monthly_transactions.expenses.sum(:amount).abs
     @monthly_balance = @monthly_income - @monthly_expense
 
-    @recent_transactions = Transaction.by_date.includes(:category).limit(5)
+    @recent_transactions = Transaction.by_date.includes(:account, :category).limit(5)
     @top_expenses = Transaction.by_period(@current_month, @current_month_end)
       .expenses
       .joins(:category)

@@ -1,8 +1,12 @@
 require "test_helper"
 
 class TagsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
   setup do
+    @user = users(:one)
     @tag = tags(:one)
+    sign_in @user
   end
 
   test "should get index" do
@@ -17,7 +21,7 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create tag" do
     assert_difference("Tag.count") do
-      post tags_url, params: { tag: { name: @tag.name } }
+      post tags_url, params: { tag: { name: "NewTag" } }
     end
 
     assert_redirected_to tag_url(Tag.last)

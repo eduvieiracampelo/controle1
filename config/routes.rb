@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
-  get "categorias-e-tags", to: "categories_and_tags#index", as: :categories_and_tags
+  devise_for :users
 
-  resources :accounts
-  resources :categories
-  resources :transactions
-  resources :tags
-
-  get "dashboard", to: "dashboard#index", as: :dashboard
+  authenticate :user do
+    get "categorias-e-tags", to: "categories_and_tags#index", as: :categories_and_tags
+    resources :accounts
+    resources :categories
+    resources :transactions
+    resources :tags
+    get "dashboard", to: "dashboard#index", as: :dashboard
+  end
 
   get "backup", to: "backup#show", as: :backup
   get "backup/download", to: "backup#download", as: :download_backup

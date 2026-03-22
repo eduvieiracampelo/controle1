@@ -22,7 +22,14 @@ class Account < ApplicationRecord
   def available_credit
     return 0 unless account_type_credit_card?
 
-    credit_limit.to_f - transactions.where("date <= ?", Date.current.end_of_month).sum(:amount).abs
+    month_start = Date.current.beginning_of_month
+    month_end = Date.current.end_of_month
+    spent = transactions
+      .expenses
+      .by_period(month_start, month_end)
+      .sum(:amount)
+
+    credit_limit.to_f - spent.abs
   end
 
   def display_type

@@ -1,0 +1,7 @@
+one:
+  email: user_one@test.com
+  encrypted_password: "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewKyNiiGTMwFYjG"
+
+two:
+  email: user_two@test.com
+  encrypted_password: "$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewKyNiiGTMwFYjG"

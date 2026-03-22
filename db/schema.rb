@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_18_214401) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_22_000826) do
   create_table "accounts", force: :cascade do |t|
     t.integer "account_type", default: 0, null: false
     t.decimal "balance", precision: 12, scale: 2, default: "0.0"
@@ -32,6 +32,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_214401) do
     t.integer "parent_id"
     t.datetime "updated_at", null: false
     t.index ["category_type"], name: "index_categories_on_category_type"
+    t.index ["name"], name: "index_categories_on_name", unique: true
     t.index ["parent_id"], name: "index_categories_on_parent_id"
   end
 
@@ -39,6 +40,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_214401) do
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "transaction_tags", force: :cascade do |t|
@@ -69,6 +71,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_18_214401) do
     t.index ["date"], name: "index_transactions_on_date"
     t.index ["paid"], name: "index_transactions_on_paid"
     t.index ["transaction_type"], name: "index_transactions_on_transaction_type"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at"
+    t.string "reset_password_token"
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "categories", "categories", column: "parent_id"

@@ -33,7 +33,7 @@ class CategoriesController < ApplicationController
   end
 
   def destroy
-    @category.destroy!
+    @category.destroy
     redirect_to categories_path, notice: "Categoria excluída com sucesso."
   end
 
